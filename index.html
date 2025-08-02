@@ -7,20 +7,32 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
-    /* Default untuk mobile */
     body {
-      background-image: url('./static/foto/9.png');
-      background-position: left;
+      background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
       transition: background-position 0.7s ease-in-out;
     }
 
-    /* Untuk tablet dan desktop */
-    @media (min-width: 768px) {
+    /* Default fallback untuk desktop */
+    @media (min-width: 1025px) {
       body {
         background-image: url('./static/foto/8.png');
-        background-position: center;
+      }
+    }
+
+    /* iPad: 768px - 1024px */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      body {
+        background-image: url('./static/foto/10.png');
+      }
+    }
+
+    /* Mobile: max 767px */
+    @media (max-width: 767px) {
+      body {
+        background-image: url('./static/foto/9.png');
+        background-position: left;
       }
     }
   </style>
@@ -42,10 +54,10 @@
   <!-- Tombol Toggle Audio -->
   <button
     id="btnToggleAudio"
-    class="absolute bottom-5 right-5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg animate__animated animate__fadeIn z-10"
+    class="absolute bottom-5 right-5 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold py-2 px-4 rounded-full shadow-lg animate__animated animate__fadeIn z-10"
     onclick="toggleAudio()"
   >
-    Play Music 🎵
+    🎵
   </button>
 
   <!-- Kartu Ucapan -->
@@ -68,7 +80,6 @@
   <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
 
-  <!-- Script Interaksi -->
   <script>
     let isManualPlay = false;
     let isReset = false;
@@ -88,10 +99,10 @@
         audio.play();
         isManualPlay = true;
         isReset = false;
-        btn.innerText = "Pause Music 🔇";
+        btn.innerText = "🔇";
       } else {
         audio.pause();
-        btn.innerText = "Play Music 🎵";
+        btn.innerText = "🎵";
       }
     }
 
@@ -106,7 +117,7 @@
 
       if (audio.paused) {
         audio.play();
-        btn.innerText = "Pause Music 🔇";
+        btn.innerText = "🔇";
       }
 
       isManualPlay = true;
@@ -116,7 +127,7 @@
         <h1 class="font-semibold text-wrap animate__animated animate__zoomIn">
           Selamat ulang tahun, Sayang! Semoga tahun ini makin banyak kebahagiaan yang datang,
           rezeki lancar, dan segala keinginan kamu dimudahkan serta langkah-langkahmu selalu diberkahi..
-          </p>Aku bangga punya pasangan sekuat dan sepintar kamu. Semoga kita terus bisa
+          Aku bangga punya pasangan sekuat dan sepintar kamu. Semoga kita terus bisa
           bareng-bareng, seru-seruan, dan saling support ya! 🎉🎂
         </h1>
         <h2 class="mt-3 animate__animated animate__fadeIn">- From : Joo -</h2>
@@ -138,10 +149,13 @@
       location.reload();
     }
 
-    // JavaScript fallback untuk deteksi user-agent (opsional jika CSS tidak cukup)
-    const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    // Optional JavaScript fallback (jaga-jaga jika CSS media query tidak bekerja)
     const body = document.getElementById("mainBody");
-    if (isMobileDevice) {
+    const userAgent = navigator.userAgent;
+
+    if (/iPad/i.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+      body.style.backgroundImage = "url('./static/foto/10.png')";
+    } else if (/Android|iPhone|iPod/i.test(userAgent)) {
       body.style.backgroundImage = "url('./static/foto/9.png')";
       body.style.backgroundPosition = "left";
     } else {
@@ -151,5 +165,3 @@
   </script>
 </body>
 </html>
-
-
